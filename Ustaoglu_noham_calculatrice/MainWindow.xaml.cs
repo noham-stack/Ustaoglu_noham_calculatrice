@@ -15,6 +15,7 @@ namespace NohamCalculette
         {
             InitializeComponent();
 
+            // Boutons des chiffres
             BTN_0.Click += Nombre_Click;
             BTN_1.Click += Nombre_Click;
             BTN_2.Click += Nombre_Click;
@@ -26,6 +27,7 @@ namespace NohamCalculette
             BTN_8.Click += Nombre_Click;
             BTN_9.Click += Nombre_Click;
 
+            // Boutons des opérations
             BTN_Plus.Click += Addition_Click;
             BTN_Moins.Click += Soustraction_Click;
             BTN_Fois.Click += Multiplication_Click;
@@ -36,6 +38,9 @@ namespace NohamCalculette
 
             // Bouton virgule décimale
             BTN_Virgule.Click += Virgule_Click;
+
+            // Afficher zéro au démarrage
+            TB_Display.Text = "0";
         }
 
         private void Nombre_Click(object sender, RoutedEventArgs e)
@@ -45,19 +50,29 @@ namespace NohamCalculette
             if (bouton != null)
             {
                 if (TB_Display.Text == "Erreur" ||
-                    TB_Display.Text == "Dépassement")
+                    TB_Display.Text == "Dépassement" ||
+                    TB_Display.Text == "Erreur : division par 0")
                 {
                     TB_Display.Text = "";
                 }
 
-                TB_Display.Text += bouton.Content.ToString();
+                // Remplacer le zéro initial par le chiffre choisi
+                if (TB_Display.Text == "0")
+                {
+                    TB_Display.Text = bouton.Content.ToString();
+                }
+                else
+                {
+                    TB_Display.Text += bouton.Content.ToString();
+                }
             }
         }
 
         private void Virgule_Click(object sender, RoutedEventArgs e)
         {
             if (TB_Display.Text == "Erreur" ||
-                TB_Display.Text == "Dépassement")
+                TB_Display.Text == "Dépassement" ||
+                TB_Display.Text == "Erreur : division par 0")
             {
                 TB_Display.Text = "";
             }
@@ -66,10 +81,15 @@ namespace NohamCalculette
             if (!TB_Display.Text.Contains(",") &&
                 !TB_Display.Text.Contains("."))
             {
-                if (TB_Display.Text == "")
+                if (TB_Display.Text == "" ||
+                    TB_Display.Text == "0")
+                {
                     TB_Display.Text = "0,";
+                }
                 else
+                {
                     TB_Display.Text += ",";
+                }
             }
         }
 
@@ -176,7 +196,7 @@ namespace NohamCalculette
 
         private void Effacer_Click(object sender, RoutedEventArgs e)
         {
-            TB_Display.Text = "";
+            TB_Display.Text = "0";
             premierNombre = 0;
             signe = "";
         }
